@@ -1,0 +1,6 @@
+@Hazparo.API_HostAddress = http://localhost:5210
+
+GET {{Hazparo.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

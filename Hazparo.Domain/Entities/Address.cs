@@ -1,0 +1,10 @@
+namespace Hazparo.Domain.Entities;
+public class Address
+{
+    // public int Id { get; set; }
+    public string? Street { get; set; } = default!;
+    public string? City { get; set; } = default!;
+    public string? State { get; set; } = default!;
+    public string? ZipCode { get; set; } = default!;
+
+}

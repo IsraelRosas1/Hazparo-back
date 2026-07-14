@@ -1,0 +1,15 @@
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/bin/Debug/net10.0/Hazparo.Application.deps.json
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/bin/Debug/net10.0/Hazparo.Application.dll
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/bin/Debug/net10.0/Hazparo.Application.pdb
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/bin/Debug/net10.0/Hazparo.Domain.dll
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/bin/Debug/net10.0/Hazparo.Domain.pdb
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.csproj.AssemblyReference.cache
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.AssemblyInfoInputs.cache
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.AssemblyInfo.cs
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.csproj.CoreCompileInputs.cache
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo..983AAD61.Up2Date
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.dll
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/refint/Hazparo.Application.dll
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/Hazparo.Application.pdb
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/obj/Debug/net10.0/ref/Hazparo.Application.dll
