@@ -17,3 +17,4 @@
 /home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/obj/Debug/net10.0/Hazparo.Infrastructure.pdb
 /home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/obj/Debug/net10.0/Hazparo.Infrastructure.genruntimeconfig.cache
 /home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/obj/Debug/net10.0/ref/Hazparo.Infrastructure.dll
+/home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/obj/Debug/net10.0/Hazparo.Infrastructure.sourcelink.json
