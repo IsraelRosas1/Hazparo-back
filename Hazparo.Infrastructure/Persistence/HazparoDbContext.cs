@@ -29,15 +29,17 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options): DbCon
                 .OnDelete(DeleteBehavior.Restrict);
             
             entity.HasMany(p => p.Specialties)
-                .WithOne()
-                .HasForeignKey(s => s.ProfessionalId);
-
+                .WithMany(s => s.Professionals)
+                .UsingEntity(j => j.ToTable("ProfessionalSpecialties"));
         });
 
         //Job entity configuration
         modelBuilder.Entity<Job> (entity =>
         {
            entity.OwnsOne(j => j.Address);
+
+           entity.Property(j => j.QuotedPrice).HasPrecision(18, 2);
+           entity.Property(j => j.FinalPrice).HasPrecision(18, 2);
 
            entity.HasOne(j => j.Customer)
                 .WithMany()

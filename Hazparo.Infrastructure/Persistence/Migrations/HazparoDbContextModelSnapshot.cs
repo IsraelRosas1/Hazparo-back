@@ -79,6 +79,7 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("FinalPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool?>("IsPaid")
@@ -88,6 +89,7 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("QuotedPrice")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("ScheduledDate")
@@ -148,18 +150,28 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                     b.Property<string>("IconUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProfessionalId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfessionalId");
-
                     b.ToTable("Specialties");
+                });
+
+            modelBuilder.Entity("ProfessionalSpecialty", b =>
+                {
+                    b.Property<int>("ProfessionalsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SpecialtiesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProfessionalsId", "SpecialtiesId");
+
+                    b.HasIndex("SpecialtiesId");
+
+                    b.ToTable("ProfessionalSpecialties", (string)null);
                 });
 
             modelBuilder.Entity("Hazparo.Domain.Entities.Customer", b =>
@@ -274,11 +286,17 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hazparo.Domain.Entities.Specialty", b =>
+            modelBuilder.Entity("ProfessionalSpecialty", b =>
                 {
                     b.HasOne("Hazparo.Domain.Entities.Professional", null)
-                        .WithMany("Specialties")
-                        .HasForeignKey("ProfessionalId")
+                        .WithMany()
+                        .HasForeignKey("ProfessionalsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hazparo.Domain.Entities.Specialty", null)
+                        .WithMany()
+                        .HasForeignKey("SpecialtiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -291,8 +309,6 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Hazparo.Domain.Entities.Professional", b =>
                 {
                     b.Navigation("Jobs");
-
-                    b.Navigation("Specialties");
                 });
 #pragma warning restore 612, 618
         }

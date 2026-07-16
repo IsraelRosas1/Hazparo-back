@@ -8,7 +8,5 @@ public class Specialty
 
     public string? IconUrl{get;set;}
 
-    // Foreign key properties
-    public int ProfessionalId {get;set;}
-    
+    public ICollection<Professional> Professionals {get;set;} = new List<Professional>();
 }
