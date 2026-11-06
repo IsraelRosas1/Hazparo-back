@@ -1,3 +1,6 @@
 <Solution>
   <Project Path="Hazparo.API/Hazparo.API.csproj" />
+  <Project Path="Hazparo.Application/Hazparo.Application.csproj" />
+  <Project Path="Hazparo.Domain/Hazparo.Domain.csproj" />
+  <Project Path="Hazparo.Infrastructure/Hazparo.Infrastructure.csproj" />
 </Solution>

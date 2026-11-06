@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "2UlEDn7ABnE=",
+  "dgSpecHash": "N1RYgVzSDQI=",
   "success": true,
   "projectFilePath": "/home/israelrosas/Desktop/hazparo_net/Hazparo.Domain/Hazparo.Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/israelrosas/.nuget/packages/nettopologysuite/2.6.0/nettopologysuite.2.6.0.nupkg.sha512"
+  ],
   "logs": []
 }

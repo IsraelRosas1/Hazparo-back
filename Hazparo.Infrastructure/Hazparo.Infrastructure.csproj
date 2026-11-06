@@ -1,18 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Hazparo.Application\Hazparo.Application.csproj" />
+    <ProjectReference Include="..\Hazparo.Domain\Hazparo.Domain.csproj" />
   </ItemGroup>
 
-<ItemGroup>
-  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.5" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5" />
-</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.3" />
+  </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
 </Project>
