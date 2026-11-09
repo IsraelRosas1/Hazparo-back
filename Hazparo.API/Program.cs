@@ -10,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddHazparoAuthentication(
+    builder.Configuration);
 
 var connectionString =
     builder.Configuration.GetConnectionString("HazparoDb")
@@ -38,6 +40,7 @@ if(app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.MapGroup("api/identity").MapIdentityApi<ApplicationUser>();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

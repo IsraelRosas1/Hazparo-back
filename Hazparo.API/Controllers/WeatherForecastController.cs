@@ -1,10 +1,15 @@
+using Hazparo.Domain.Constants;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hazparo.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+[Route("api/admin")]
+[Authorize(Roles =UserRoles.Admin)]
+public class WeatherForecastController(IMediator mediator) : ControllerBase
 {
     private static readonly string[] Summaries =
     [

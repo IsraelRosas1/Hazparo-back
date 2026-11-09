@@ -10,8 +10,6 @@ namespace Hazparo.Infrastructure.Persistence;
 public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
     : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
-    public DbSet<AppUser> AppUsers => Set<AppUser>();
-    public DbSet<AppUserRole> AppUserRoles => Set<AppUserRole>();
     public DbSet<ClientProfile> ClientProfiles => Set<ClientProfile>();
     public DbSet<ClientAddress> ClientAddresses => Set<ClientAddress>();
     public DbSet<ProfessionalProfile> ProfessionalProfiles => Set<ProfessionalProfile>();
@@ -37,8 +35,6 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
         modelBuilder.HasPostgresExtension("postgis");
         modelBuilder.HasPostgresExtension("citext");
 
-        ConfigureAppUser(modelBuilder);
-        ConfigureAppUserRole(modelBuilder);
         ConfigureClientProfile(modelBuilder);
         ConfigureClientAddress(modelBuilder);
         ConfigureProfessionalProfile(modelBuilder);
@@ -49,67 +45,6 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
         ConfigureServiceRequestPhoto(modelBuilder);
         ConfigureServiceQuote(modelBuilder);
         ConfigureServiceRequestStatusHistory(modelBuilder);
-    }
-
-    private static void ConfigureAppUser(ModelBuilder modelBuilder)
-    {
-        var entity = modelBuilder.Entity<AppUser>();
-
-        entity.ToTable("app_users");
-        entity.HasKey(user => user.Id);
-
-        entity.Property(user => user.Id)
-            .HasColumnType("uuid")
-            .HasDefaultValueSql("gen_random_uuid()");
-        entity.Property(user => user.Email)
-            .HasColumnType("citext")
-            .IsRequired();
-        entity.Property(user => user.NormalizedEmail)
-            .HasColumnName("normalized_email")
-            .HasColumnType("text")
-            .HasComputedColumnSql("upper(email::text)", stored: true);
-        entity.Property(user => user.PasswordHash)
-            .HasColumnName("password_hash")
-            .HasColumnType("text")
-            .IsRequired();
-        entity.Property(user => user.DisplayName)
-            .HasColumnName("display_name")
-            .HasMaxLength(120)
-            .IsRequired();
-        entity.Property(user => user.PhoneNumber)
-            .HasColumnName("phone_number")
-            .HasMaxLength(30);
-        entity.Property(user => user.AvatarObjectKey)
-            .HasColumnName("avatar_object_key")
-            .HasColumnType("text");
-        entity.Property(user => user.Status)
-            .HasDefaultValue(AccountStatus.Pending)
-            .IsRequired();
-        entity.Property(user => user.EmailConfirmedAt).HasColumnName("email_confirmed_at");
-        entity.Property(user => user.PhoneConfirmedAt).HasColumnName("phone_confirmed_at");
-        entity.Property(user => user.LastLoginAt).HasColumnName("last_login_at");
-        entity.Property(user => user.DeletedAt).HasColumnName("deleted_at");
-
-        ConfigureCreatedAndUpdated(entity, user => user.CreatedAt, user => user.UpdatedAt);
-    }
-
-    private static void ConfigureAppUserRole(ModelBuilder modelBuilder)
-    {
-        var entity = modelBuilder.Entity<AppUserRole>();
-
-        entity.ToTable("app_user_roles");
-        entity.HasKey(role => new { role.UserId, role.Role });
-        entity.Property(role => role.UserId).HasColumnName("user_id").HasColumnType("uuid");
-        entity.Property(role => role.Role).HasColumnName("role").IsRequired();
-        entity.Property(role => role.CreatedAt)
-            .HasColumnName("created_at")
-            .HasDefaultValueSql("now()")
-            .IsRequired();
-
-        entity.HasOne(role => role.User)
-            .WithMany(user => user.Roles)
-            .HasForeignKey(role => role.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private static void ConfigureClientProfile(ModelBuilder modelBuilder)
