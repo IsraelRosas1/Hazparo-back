@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Hazparo.Infrastructure.Persistence;
 
 public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
-    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
+    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<ClientProfile> ClientProfiles => Set<ClientProfile>();
     public DbSet<ClientAddress> ClientAddresses => Set<ClientAddress>();

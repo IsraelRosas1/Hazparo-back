@@ -23,7 +23,6 @@ builder.Services.AddDbContext<HazparoDbContext>(options =>
     {
         npgsql.UseNetTopologySuite();
 
-        npgsql.MapEnum<UserRole>("user_role");
         npgsql.MapEnum<AccountStatus>("account_status");
         npgsql.MapEnum<VerificationStatus>("verification_status");
         npgsql.MapEnum<ServiceRequestStatus>("service_request_status");
@@ -39,7 +38,7 @@ if(app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
-app.MapGroup("api/identity").MapIdentityApi<ApplicationUser>();
+// app.MapGroup("api/identity").MapIdentityApi<ApplicationUser>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
