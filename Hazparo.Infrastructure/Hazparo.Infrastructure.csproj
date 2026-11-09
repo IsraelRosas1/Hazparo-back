@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hazparo.Domain\Hazparo.Domain.csproj" />
+    <ProjectReference Include="..\Hazparo.Application\Hazparo.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

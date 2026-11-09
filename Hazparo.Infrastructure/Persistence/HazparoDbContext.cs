@@ -1,12 +1,14 @@
 using System.Linq.Expressions;
 using Hazparo.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Hazparo.Infrastructure.Persistence;
 
 public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
-    : DbContext(options)
+    : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<AppUser> AppUsers => Set<AppUser>();
     public DbSet<AppUserRole> AppUserRoles => Set<AppUserRole>();
@@ -25,6 +27,10 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<ApplicationUser>().ToTable("app_users");
+        modelBuilder.Entity<IdentityRole<Guid>>().ToTable("app_roles");
+        modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("app_user_roles");
 
         modelBuilder.HasDefaultSchema("public");
         modelBuilder.HasPostgresExtension("pgcrypto");

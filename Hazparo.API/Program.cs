@@ -1,10 +1,15 @@
 using Hazparo.Domain.Entities;
+using Hazparo.API.Extensions;
 using Hazparo.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddPresentation();
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi();
+builder.Services.AddHttpContextAccessor();
 
 var connectionString =
     builder.Configuration.GetConnectionString("HazparoDb")
@@ -26,7 +31,13 @@ builder.Services.AddDbContext<HazparoDbContext>(options =>
 
 var app = builder.Build();
 
+if(app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseHttpsRedirection();
+app.MapGroup("api/identity").MapIdentityApi<ApplicationUser>();
 app.UseAuthorization();
 app.MapControllers();
 

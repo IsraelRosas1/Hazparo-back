@@ -1,9 +1,24 @@
 {
   "version": 2,
-  "dgSpecHash": "TKtqeAFXdVg=",
+  "dgSpecHash": "66T0EGWqKDo=",
   "success": true,
   "projectFilePath": "/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/Hazparo.Application.csproj",
   "expectedPackageFiles": [
+    "/home/israelrosas/.nuget/packages/automapper/16.3.0/automapper.16.3.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/fluentvalidation/12.2.0/fluentvalidation.12.2.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/fluentvalidation.aspnetcore/11.3.1/fluentvalidation.aspnetcore.11.3.1.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/fluentvalidation.dependencyinjectionextensions/12.2.0/fluentvalidation.dependencyinjectionextensions.12.2.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/mediatr/14.3.0/mediatr.14.3.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/10.0.14/microsoft.aspnetcore.identity.entityframeworkcore.10.0.14.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore/10.0.14/microsoft.entityframeworkcore.10.0.14.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore.abstractions/10.0.14/microsoft.entityframeworkcore.abstractions.10.0.14.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore.analyzers/10.0.14/microsoft.entityframeworkcore.analyzers.10.0.14.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore.relational/10.0.14/microsoft.entityframeworkcore.relational.10.0.14.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.abstractions/8.14.0/microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.14.0/microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.logging/8.14.0/microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.tokens/8.14.0/microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/nettopologysuite/2.6.0/nettopologysuite.2.6.0.nupkg.sha512"
   ],
   "logs": []
