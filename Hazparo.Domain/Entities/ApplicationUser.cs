@@ -14,4 +14,5 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public ClientProfile? ClientProfile { get; set; }
     public ProfessionalProfile? ProfessionalProfile { get; set; }
+    public ICollection<AuthRefreshToken> RefreshTokens { get; set; } = new List<AuthRefreshToken>();
 }

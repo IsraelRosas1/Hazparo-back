@@ -21,7 +21,8 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
     public DbSet<ServiceQuote> ServiceQuotes => Set<ServiceQuote>();
     public DbSet<ServiceRequestStatusHistory> ServiceRequestStatusHistories =>
         Set<ServiceRequestStatusHistory>();
-
+    public DbSet<AuthRefreshToken> AuthRefreshTokens =>
+        Set<AuthRefreshToken>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -45,6 +46,7 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
         ConfigureServiceRequestPhoto(modelBuilder);
         ConfigureServiceQuote(modelBuilder);
         ConfigureServiceRequestStatusHistory(modelBuilder);
+        ConfigureAuthRefreshToken(modelBuilder);
     }
 
     private static void ConfigureClientProfile(ModelBuilder modelBuilder)
@@ -63,6 +65,73 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
             .WithOne(user => user.ClientProfile)
             .HasForeignKey<ClientProfile>(profile => profile.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+    }
+    private static void ConfigureAuthRefreshToken(ModelBuilder modelBuilder)
+    {
+        var entity = modelBuilder.Entity<AuthRefreshToken>();
+
+        entity.ToTable("auth_refresh_tokens", table =>
+        {
+            table.HasCheckConstraint(
+                "ck_auth_refresh_tokens_expiry",
+                "expires_at > created_at");
+        });
+
+        entity.HasKey(token => token.Id);
+
+        entity.Property(token => token.Id)
+            .HasColumnType("uuid")
+            .HasDefaultValueSql("gen_random_uuid()");
+
+        entity.Property(token => token.UserId)
+            .HasColumnName("user_id")
+            .HasColumnType("uuid");
+
+        entity.Property(token => token.TokenHash)
+            .HasColumnName("token_hash")
+            .HasColumnType("char(64)")
+            .IsRequired();
+
+        entity.Property(token => token.ExpiresAt)
+            .HasColumnName("expires_at")
+            .IsRequired();
+
+        entity.Property(token => token.RevokedAt)
+            .HasColumnName("revoked_at");
+
+        entity.Property(token => token.ReplacedByTokenId)
+            .HasColumnName("replaced_by_token_id")
+            .HasColumnType("uuid");
+
+        entity.Property(token => token.UserAgent)
+            .HasColumnName("user_agent")
+            .HasColumnType("text");
+
+        entity.Property(token => token.IpAddress)
+            .HasColumnName("ip_address")
+            .HasColumnType("inet");
+
+        entity.Property(token => token.CreatedAt)
+            .HasColumnName("created_at")
+            .HasDefaultValueSql("now()")
+            .IsRequired();
+
+        entity.HasIndex(token => token.TokenHash)
+            .IsUnique();
+
+        entity.HasIndex(token => new { token.UserId, token.ExpiresAt })
+            .HasDatabaseName("auth_refresh_tokens_lookup_idx")
+            .HasFilter("revoked_at IS NULL");
+
+        entity.HasOne(token => token.User)
+            .WithMany(user => user.RefreshTokens)
+            .HasForeignKey(token => token.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        entity.HasOne(token => token.ReplacedByToken)
+            .WithMany()
+            .HasForeignKey(token => token.ReplacedByTokenId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 
     private static void ConfigureClientAddress(ModelBuilder modelBuilder)

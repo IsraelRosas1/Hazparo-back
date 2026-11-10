@@ -9,7 +9,7 @@ namespace Hazparo.Application.Admin.Commands.AssignUserRole;
 
 public class AssignUserRoleCommandHandler(ILogger<AssignUserRoleCommandHandler> logger,
     UserManager<ApplicationUser> userManager,
-    RoleManager<IdentityRole> roleManager): IRequestHandler<AssignUserRoleCommand>
+    RoleManager<IdentityRole<Guid>> roleManager): IRequestHandler<AssignUserRoleCommand>
 {
     public async Task Handle (AssignUserRoleCommand request, CancellationToken cancellationToken)
     {

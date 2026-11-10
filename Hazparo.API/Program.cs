@@ -2,35 +2,25 @@ using Hazparo.Domain.Entities;
 using Hazparo.API.Extensions;
 using Hazparo.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Hazparo.Infrastructure.Extensions;
+using Hazparo.Application.Extensions;
+using Hazparo.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddPresentation();
-builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHazparoAuthentication(
     builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
-var connectionString =
-    builder.Configuration.GetConnectionString("HazparoDb")
-    ?? throw new InvalidOperationException(
-        "Connection string 'HazparoDb' was not found.");
-
-builder.Services.AddDbContext<HazparoDbContext>(options =>
-    options.UseNpgsql(connectionString, npgsql =>
-    {
-        npgsql.UseNetTopologySuite();
-
-        npgsql.MapEnum<AccountStatus>("account_status");
-        npgsql.MapEnum<VerificationStatus>("verification_status");
-        npgsql.MapEnum<ServiceRequestStatus>("service_request_status");
-        npgsql.MapEnum<QuoteStatus>("quote_status");
-    })
-    .UseSnakeCaseNamingConvention());
 
 var app = builder.Build();
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<IHazparoSeeder>();
+await seeder.SeedAsync();
 
 if(app.Environment.IsDevelopment())
 {

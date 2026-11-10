@@ -30,6 +30,7 @@
     <ProjectReference Include="..\Hazparo.Infrastructure\Hazparo.Infrastructure.csproj">
       <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
     </ProjectReference>
+    <ProjectReference Include="..\Hazparo.Application\Hazparo.Application.csproj" />
   </ItemGroup>
 
 </Project>

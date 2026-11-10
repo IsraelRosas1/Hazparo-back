@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LACS6UhyjDM=",
+  "dgSpecHash": "a9CWZw23pCE=",
   "success": true,
   "projectFilePath": "/home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/Hazparo.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "/home/israelrosas/.nuget/packages/microsoft.aspnetcore.cryptography.internal/10.0.14/microsoft.aspnetcore.cryptography.internal.10.0.14.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/10.0.14/microsoft.aspnetcore.cryptography.keyderivation.10.0.14.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.aspnetcore.identity.entityframeworkcore/10.0.14/microsoft.aspnetcore.identity.entityframeworkcore.10.0.14.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.bcl.cryptography/10.0.2/microsoft.bcl.cryptography.10.0.2.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore/10.0.14/microsoft.entityframeworkcore.10.0.14.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore.abstractions/10.0.14/microsoft.entityframeworkcore.abstractions.10.0.14.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.entityframeworkcore.analyzers/10.0.14/microsoft.entityframeworkcore.analyzers.10.0.14.nupkg.sha512",
@@ -34,16 +35,17 @@
     "/home/israelrosas/.nuget/packages/microsoft.extensions.options/10.0.14/microsoft.extensions.options.10.0.14.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.extensions.options.configurationextensions/10.0.14/microsoft.extensions.options.configurationextensions.10.0.14.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/microsoft.extensions.primitives/10.0.14/microsoft.extensions.primitives.10.0.14.nupkg.sha512",
-    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.abstractions/8.14.0/microsoft.identitymodel.abstractions.8.14.0.nupkg.sha512",
-    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.14.0/microsoft.identitymodel.jsonwebtokens.8.14.0.nupkg.sha512",
-    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.logging/8.14.0/microsoft.identitymodel.logging.8.14.0.nupkg.sha512",
-    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.tokens/8.14.0/microsoft.identitymodel.tokens.8.14.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.abstractions/8.23.0/microsoft.identitymodel.abstractions.8.23.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.jsonwebtokens/8.23.0/microsoft.identitymodel.jsonwebtokens.8.23.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.logging/8.23.0/microsoft.identitymodel.logging.8.23.0.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/microsoft.identitymodel.tokens/8.23.0/microsoft.identitymodel.tokens.8.23.0.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/nettopologysuite/2.6.0/nettopologysuite.2.6.0.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/nettopologysuite.io.postgis/2.1.0/nettopologysuite.io.postgis.2.1.0.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/npgsql/10.0.3/npgsql.10.0.3.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/npgsql.entityframeworkcore.postgresql/10.0.3/npgsql.entityframeworkcore.postgresql.10.0.3.nupkg.sha512",
     "/home/israelrosas/.nuget/packages/npgsql.entityframeworkcore.postgresql.nettopologysuite/10.0.3/npgsql.entityframeworkcore.postgresql.nettopologysuite.10.0.3.nupkg.sha512",
-    "/home/israelrosas/.nuget/packages/npgsql.nettopologysuite/10.0.3/npgsql.nettopologysuite.10.0.3.nupkg.sha512"
+    "/home/israelrosas/.nuget/packages/npgsql.nettopologysuite/10.0.3/npgsql.nettopologysuite.10.0.3.nupkg.sha512",
+    "/home/israelrosas/.nuget/packages/system.identitymodel.tokens.jwt/8.23.0/system.identitymodel.tokens.jwt.8.23.0.nupkg.sha512"
   ],
   "logs": []
 }

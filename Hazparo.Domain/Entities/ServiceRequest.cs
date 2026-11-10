@@ -47,7 +47,7 @@ public class ServiceRequest
     public ClientProfile Client { get; set; } = null!;
     public ServiceCategory Category { get; set; } = null!;
     public ProfessionalProfile? AssignedProfessional { get; set; }
-    public AppUser? CancelledByUser { get; set; }
+    public ApplicationUser? CancelledByUser { get; set; }
     public ICollection<ServiceRequestPhoto> Photos { get; set; } = new List<ServiceRequestPhoto>();
     public ICollection<ServiceQuote> Quotes { get; set; } = new List<ServiceQuote>();
     public ICollection<ServiceRequestStatusHistory> StatusHistory { get; set; } = new List<ServiceRequestStatusHistory>();

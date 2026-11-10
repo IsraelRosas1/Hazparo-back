@@ -22,7 +22,7 @@ public class ProfessionalProfile
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
 
-    public AppUser User { get; set; } = null!;
+    public ApplicationUser User { get; set; } = null!;
     public ProfessionalLocation? Location { get; set; }
     public ICollection<ProfessionalService> Services { get; set; } = new List<ProfessionalService>();
     public ICollection<ServiceRequest> AssignedRequests { get; set; } = new List<ServiceRequest>();

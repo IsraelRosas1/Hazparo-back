@@ -27,6 +27,9 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
+              "/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/Hazparo.Application.csproj": {
+                "projectPath": "/home/israelrosas/Desktop/hazparo_net/Hazparo.Application/Hazparo.Application.csproj"
+              },
               "/home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/Hazparo.Infrastructure.csproj": {
                 "projectPath": "/home/israelrosas/Desktop/hazparo_net/Hazparo.Infrastructure/Hazparo.Infrastructure.csproj"
               }
@@ -1419,6 +1422,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite": {
               "target": "Package",
               "version": "[10.0.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.23.0, )"
             }
           },
           "imports": [

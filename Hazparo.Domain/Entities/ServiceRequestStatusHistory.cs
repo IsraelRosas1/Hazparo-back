@@ -11,5 +11,5 @@ public class ServiceRequestStatusHistory
     public DateTimeOffset CreatedAt { get; set; }
 
     public ServiceRequest Request { get; set; } = null!;
-    public AppUser? ChangedByUser { get; set; }
+    public ApplicationUser? ChangedByUser { get; set; }
 }
