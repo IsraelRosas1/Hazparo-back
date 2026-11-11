@@ -1,5 +1,5 @@
 using Hazparo.Domain.Entities;
-using Manlab.Domain.Exceptions;
+using Hazparo.Domain.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;

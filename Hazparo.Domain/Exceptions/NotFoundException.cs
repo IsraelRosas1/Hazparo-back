@@ -1,4 +1,4 @@
-namespace Manlab.Domain.Exceptions;
+namespace Hazparo.Domain.Exceptions;
 
 public class NotFoundException : Exception
 {

@@ -38,7 +38,7 @@ public static class AuthenticationServiceExtensions
                 options.Lockout.DefaultLockoutTimeSpan =
                     TimeSpan.FromMinutes(15);
 
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
             })
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<HazparoDbContext>()
