@@ -1,7 +1,7 @@
 using System.Net;
 using Hazparo.Application.Identity.Dtos;
 using MediatR;
-
+namespace Hazparo.Application.Identity.Commands.Login;
 public sealed class LoginCommand : IRequest<LoginResultDto>
 {
     public string Email { get; set; } = string.Empty;
