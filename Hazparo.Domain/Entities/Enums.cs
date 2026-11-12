@@ -45,3 +45,9 @@ public enum QuoteStatus
     Withdrawn,
     Expired
 }
+public enum ProfessionalDocumentType
+{
+    FacePhoto,
+    IneFront,
+    IneBack
+}

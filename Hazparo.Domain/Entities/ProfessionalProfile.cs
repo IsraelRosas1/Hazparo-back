@@ -27,4 +27,5 @@ public class ProfessionalProfile
     public ICollection<ProfessionalService> Services { get; set; } = new List<ProfessionalService>();
     public ICollection<ServiceRequest> AssignedRequests { get; set; } = new List<ServiceRequest>();
     public ICollection<ServiceQuote> Quotes { get; set; } = new List<ServiceQuote>();
+    public ICollection<ProfessionalVerificationDocument> VerificationDocuments { get; set; } = new List<ProfessionalVerificationDocument>();
 }

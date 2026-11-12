@@ -16,6 +16,7 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
     public DbSet<ProfessionalLocation> ProfessionalLocations => Set<ProfessionalLocation>();
     public DbSet<ServiceCategory> ServiceCategories => Set<ServiceCategory>();
     public DbSet<ProfessionalService> ProfessionalServices => Set<ProfessionalService>();
+    public DbSet<ProfessionalVerificationDocument> ProfessionalVerificationDocuments => Set<ProfessionalVerificationDocument>();
     public DbSet<ServiceRequest> ServiceRequests => Set<ServiceRequest>();
     public DbSet<ServiceRequestPhoto> ServiceRequestPhotos => Set<ServiceRequestPhoto>();
     public DbSet<ServiceQuote> ServiceQuotes => Set<ServiceQuote>();
@@ -47,6 +48,7 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
         ConfigureServiceQuote(modelBuilder);
         ConfigureServiceRequestStatusHistory(modelBuilder);
         ConfigureAuthRefreshToken(modelBuilder);
+        ConfigureProfessionalVerificationDocument(modelBuilder);
     }
 
     private static void ConfigureClientProfile(ModelBuilder modelBuilder)
@@ -273,7 +275,68 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
             .HasForeignKey<ProfessionalLocation>(location => location.ProfessionalId)
             .OnDelete(DeleteBehavior.Cascade);
     }
+    private static void ConfigureProfessionalVerificationDocument(
+    ModelBuilder modelBuilder)
+    {
+        var entity =
+            modelBuilder.Entity<ProfessionalVerificationDocument>();
 
+        entity.ToTable("professional_verification_documents");
+
+        entity.HasKey(document => document.Id);
+
+        entity.Property(document => document.Id)
+            .HasColumnType("uuid")
+            .HasDefaultValueSql("gen_random_uuid()");
+
+        entity.Property(document => document.ProfessionalId)
+            .HasColumnName("professional_id")
+            .HasColumnType("uuid")
+            .IsRequired();
+
+        entity.Property(document => document.DocumentType)
+            .HasColumnName("document_type")
+            .HasConversion<string>()
+            .HasMaxLength(30)
+            .IsRequired();
+
+        entity.Property(document => document.StorageKey)
+            .HasColumnName("storage_key")
+            .HasMaxLength(500)
+            .IsRequired();
+
+        entity.Property(document => document.OriginalFileName)
+            .HasColumnName("original_file_name")
+            .HasMaxLength(255)
+            .IsRequired();
+
+        entity.Property(document => document.ContentType)
+            .HasColumnName("content_type")
+            .HasMaxLength(100)
+            .IsRequired();
+
+        entity.Property(document => document.SizeBytes)
+            .HasColumnName("size_bytes")
+            .IsRequired();
+
+        entity.Property(document => document.CreatedAt)
+            .HasColumnName("created_at")
+            .HasDefaultValueSql("now()")
+            .IsRequired();
+
+        entity.HasIndex(document =>
+            new
+            {
+                document.ProfessionalId,
+                document.DocumentType
+            })
+            .IsUnique();
+
+        entity.HasOne(document => document.Professional)
+            .WithMany(profile => profile.VerificationDocuments)
+            .HasForeignKey(document => document.ProfessionalId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
     private static void ConfigureServiceCategory(ModelBuilder modelBuilder)
     {
         var entity = modelBuilder.Entity<ServiceCategory>();

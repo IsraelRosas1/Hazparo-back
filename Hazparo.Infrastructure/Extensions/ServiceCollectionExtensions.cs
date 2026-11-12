@@ -6,6 +6,7 @@ using Hazparo.Infrastructure.Identity;
 using Hazparo.Infrastructure.Persistence;
 using Hazparo.Infrastructure.Persistence.Repositories;
 using Hazparo.Infrastructure.Security;
+using Hazparo.Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,5 +42,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAccountEmailSender, AccountEmailSender>();
         services.AddScoped<IClientProfileRepository, ClientProfileRepository>();
         services.AddScoped<IServiceCategoryRepository, ServiceCategoryRepository>();
+        services.AddScoped<IPrivateFileStorage,LocalPrivateFileStorage>();
+        services.AddScoped<IProfessionalDocumentRepository,ProfessionalDocumentRepository>();
+        services.AddScoped<IProfessionalOnboardingRepository,ProfessionalOnboardingRepository>();
     }
 }

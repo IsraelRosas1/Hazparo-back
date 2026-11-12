@@ -522,6 +522,62 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                     b.ToTable("professional_services", "public");
                 });
 
+            modelBuilder.Entity("Hazparo.Domain.Entities.ProfessionalVerificationDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("content_type");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("document_type");
+
+                    b.Property<string>("OriginalFileName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("original_file_name");
+
+                    b.Property<Guid>("ProfessionalId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("professional_id");
+
+                    b.Property<long>("SizeBytes")
+                        .HasColumnType("bigint")
+                        .HasColumnName("size_bytes");
+
+                    b.Property<string>("StorageKey")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("storage_key");
+
+                    b.HasKey("Id")
+                        .HasName("pk_professional_verification_documents");
+
+                    b.HasIndex("ProfessionalId", "DocumentType")
+                        .IsUnique()
+                        .HasDatabaseName("ix_professional_verification_documents_professional_id_documen");
+
+                    b.ToTable("professional_verification_documents", "public");
+                });
+
             modelBuilder.Entity("Hazparo.Domain.Entities.ServiceCategory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1171,6 +1227,18 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                     b.Navigation("Professional");
                 });
 
+            modelBuilder.Entity("Hazparo.Domain.Entities.ProfessionalVerificationDocument", b =>
+                {
+                    b.HasOne("Hazparo.Domain.Entities.ProfessionalProfile", "Professional")
+                        .WithMany("VerificationDocuments")
+                        .HasForeignKey("ProfessionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_professional_verification_documents_professional_profiles_p");
+
+                    b.Navigation("Professional");
+                });
+
             modelBuilder.Entity("Hazparo.Domain.Entities.ServiceQuote", b =>
                 {
                     b.HasOne("Hazparo.Domain.Entities.ProfessionalProfile", "Professional")
@@ -1343,6 +1411,8 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                     b.Navigation("Quotes");
 
                     b.Navigation("Services");
+
+                    b.Navigation("VerificationDocuments");
                 });
 
             modelBuilder.Entity("Hazparo.Domain.Entities.ServiceCategory", b =>

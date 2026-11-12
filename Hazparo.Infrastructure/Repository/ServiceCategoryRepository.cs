@@ -17,4 +17,15 @@ public sealed class ServiceCategoryRepository(
             .OrderBy(category => category.SortOrder)
             .ToListAsync(cancellationToken);
     }
+    public async Task<IReadOnlyList<Guid>>
+    GetActiveCategoryIdsAsync(
+        IReadOnlyCollection<Guid> categoryIds, CancellationToken cancellationToken)
+    {
+        return await dbContext.ServiceCategories
+            .Where(category =>
+                category.IsActive &&
+                categoryIds.Contains(category.Id))
+            .Select(category => category.Id)
+            .ToListAsync(cancellationToken);
+    }
 }
