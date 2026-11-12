@@ -1,6 +1,8 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Hazparo.Application.Common.Behaviors;
 using Hazparo.Application.User;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Hazparo.Application.Extensions;
@@ -23,5 +25,6 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUserContext, UserContext>();
         services.AddHttpContextAccessor();
+        services.AddTransient(typeof(IPipelineBehavior<,>),typeof(ValidationBehavior<,>));
     }
 }

@@ -1,6 +1,7 @@
 using Hazparo.Domain.Constants;
 using Hazparo.Domain.Entities;
 using Hazparo.Domain.Interfaces;
+using Hazparo.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
@@ -9,7 +10,7 @@ using System.Text;
 namespace Hazparo.Application.Identity.Commands.Register;
 
 public sealed class RegisterCommandHandler(
-    UserManager<ApplicationUser> userManager,
+    UserManager<ApplicationUser> userManager,IClientProfileRepository clientProfileRepository,
     IAccountEmailSender accountEmailSender)
     : IRequestHandler<RegisterCommand, IdentityResult>
 {
@@ -56,6 +57,14 @@ public sealed class RegisterCommandHandler(
             await userManager.DeleteAsync(user);
             return roleResult;
         }
+        var clientProfile = new ClientProfile
+        {
+            UserId = user.Id
+        };
+
+        await clientProfileRepository.AddAsync(clientProfile,cancellationToken);
+
+        await clientProfileRepository.SaveChangesAsync(cancellationToken);
 
         var token =
             await userManager.GenerateEmailConfirmationTokenAsync(user);

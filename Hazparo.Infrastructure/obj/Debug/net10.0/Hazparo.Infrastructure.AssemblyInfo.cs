@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hazparo.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a2e5c4124d2d0dcf8649f3de8b813012eb31cf9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10e0fdee72096251c9ae2be55e22c5a8c8da39ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hazparo.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hazparo.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

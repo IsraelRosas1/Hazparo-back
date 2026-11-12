@@ -585,6 +585,10 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_service_categories");
 
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ix_service_categories_slug");
+
                     b.ToTable("service_categories", "public");
                 });
 

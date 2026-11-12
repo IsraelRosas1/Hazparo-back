@@ -6,7 +6,6 @@ using Hazparo.Infrastructure.Identity;
 using Hazparo.Infrastructure.Persistence;
 using Hazparo.Infrastructure.Persistence.Repositories;
 using Hazparo.Infrastructure.Security;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +39,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<IAccessTokenService, JwtTokenService>();
         services.AddScoped<IAccountEmailSender, AccountEmailSender>();
-
+        services.AddScoped<IClientProfileRepository, ClientProfileRepository>();
+        services.AddScoped<IServiceCategoryRepository, ServiceCategoryRepository>();
     }
 }

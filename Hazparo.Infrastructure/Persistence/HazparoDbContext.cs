@@ -301,6 +301,8 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
             .IsRequired();
         entity.Property(category => category.SortOrder).HasColumnName("sort_order").IsRequired();
         ConfigureCreatedAndUpdated(entity, category => category.CreatedAt, category => category.UpdatedAt);
+        entity.HasIndex(category => category.Slug).IsUnique();
+        
     }
 
     private static void ConfigureProfessionalService(ModelBuilder modelBuilder)

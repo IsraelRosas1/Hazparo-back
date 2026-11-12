@@ -15,7 +15,7 @@ builder.Services.AddHazparoAuthentication(
     builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
-
+builder.Services.AddHazparoRateLimiting();
 
 var app = builder.Build();
 var scope = app.Services.CreateScope();
@@ -29,6 +29,9 @@ if(app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 // app.MapGroup("api/identity").MapIdentityApi<ApplicationUser>();
+app.UseHttpsRedirection();
+app.UseRateLimiter();
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

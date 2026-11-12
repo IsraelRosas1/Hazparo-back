@@ -1,17 +1,20 @@
 using Hazparo.Domain.Constants;
 using Hazparo.Domain.Entities;
+using Hazparo.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Hazparo.Infrastructure.Identity;
 
 public sealed class HazparoSeeder(
     RoleManager<IdentityRole<Guid>> roleManager,
-    UserManager<ApplicationUser> userManager,
+    UserManager<ApplicationUser> userManager,HazparoDbContext dbContext,
     IConfiguration configuration) : IHazparoSeeder
 {
     public async Task SeedAsync()
-    {
+    {   await SeedServiceCategoriesAsync(dbContext);
+
         var roles = new[]
         {
             UserRoles.Client,
@@ -102,4 +105,36 @@ public sealed class HazparoSeeder(
                 $"{message} {errors}");
         }
     }
+
+    private static async Task SeedServiceCategoriesAsync(
+    HazparoDbContext dbContext)
+{
+    var existingSlugs = (
+        await dbContext.ServiceCategories
+            .Select(category => category.Slug)
+            .ToListAsync())
+        .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+    var categoriesToAdd = ServiceCategorySeedData.All
+        .Where(item => !existingSlugs.Contains(item.Slug))
+        .Select(item => new ServiceCategory
+        {
+            Id = Guid.NewGuid(),
+            GroupName = item.GroupName,
+            Name = item.Name,
+            Slug = item.Slug,
+            SortOrder = item.SortOrder,
+            IsActive = true,
+            SearchAliases = []
+        })
+        .ToList();
+
+    if (categoriesToAdd.Count == 0)
+    {
+        return;
+    }
+
+    await dbContext.ServiceCategories.AddRangeAsync(categoriesToAdd);
+    await dbContext.SaveChangesAsync();
+}
 }
