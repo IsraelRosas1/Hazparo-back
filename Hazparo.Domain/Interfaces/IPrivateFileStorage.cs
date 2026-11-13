@@ -6,4 +6,5 @@ public interface IPrivateFileStorage
         CancellationToken cancellationToken);
 
     Task DeleteAsync(string storageKey, CancellationToken cancellationToken);
+    Task<string> SaveServiceRequestPhotoAsync(Stream content,Guid requestId, CancellationToken cancellationToken);
 }

@@ -45,5 +45,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPrivateFileStorage,LocalPrivateFileStorage>();
         services.AddScoped<IProfessionalDocumentRepository,ProfessionalDocumentRepository>();
         services.AddScoped<IProfessionalOnboardingRepository,ProfessionalOnboardingRepository>();
+        services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
+    
     }
 }

@@ -28,8 +28,7 @@ public sealed class UploadVerificationDocumentsCommandHandler(
         "image/heic",
         "image/heif",
         "image/webp",
-        "image/avif",
-        "image/IMG"
+        "image/avif"        
         };
 
     public async Task<IdentityResult> Handle(

@@ -23,7 +23,7 @@ public static class RateLimitingServiceExtensions
                     new
                     {
                         message =
-                            "Too many requests. Please try again later."
+                            "Has intentado muchas veces. Intenta de nuevo mas tarde."
                     },
                     cancellationToken);
             };
@@ -32,8 +32,8 @@ public static class RateLimitingServiceExtensions
                 "identity-login",
                 httpContext => CreateFixedWindowLimiter(
                     httpContext,
-                    permitLimit: 5,
-                    window: TimeSpan.FromMinutes(15)));
+                    permitLimit: 10,
+                    window: TimeSpan.FromMinutes(5)));
 
             options.AddPolicy(
                 "identity-refresh",

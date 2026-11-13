@@ -457,6 +457,9 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
             .HasColumnName("location")
             .HasColumnType("geography (point,4326)")
             .IsRequired();
+        entity.Property(request => request.LocationReference)
+        .HasColumnName("location_reference")
+        .HasMaxLength(500);
         ConfigureCreatedAndUpdated(entity, request => request.CreatedAt, request => request.UpdatedAt);
         entity.Property(request => request.QuotedAt).HasColumnName("quoted_at");
         entity.Property(request => request.AssignedAt).HasColumnName("assigned_at");

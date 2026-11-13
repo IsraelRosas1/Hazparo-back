@@ -65,4 +65,38 @@ public sealed class LocalPrivateFileStorage(
 
         return Task.CompletedTask;
     }
+    public async Task<string> SaveServiceRequestPhotoAsync(
+    Stream content,
+    Guid requestId,
+    CancellationToken cancellationToken)
+    {
+        var fileName = $"{Guid.NewGuid():N}.bin";
+
+        var relativeKey = Path.Combine(
+            "service-request-photos",
+            requestId.ToString(),
+            fileName);
+
+        var fullPath = Path.Combine(
+            rootPath,
+            relativeKey);
+
+        var directory = Path.GetDirectoryName(fullPath)!;
+
+        Directory.CreateDirectory(directory);
+
+        await using var fileStream = new FileStream(
+            fullPath,
+            FileMode.CreateNew,
+            FileAccess.Write,
+            FileShare.None,
+            bufferSize: 81920,
+            useAsync: true);
+
+        await content.CopyToAsync(
+            fileStream,
+            cancellationToken);
+
+        return relativeKey;
+    }
 }

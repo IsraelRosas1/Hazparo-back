@@ -23,7 +23,11 @@ public class LoginCommandHandler(
 
         if (user is null)
         {
-            throw new NotFoundException("No existe cuenta registrada con este email");
+            return new LoginResultDto
+            {
+                Succeeded = false,
+                Error = "Email o contraseña inválidos."
+            };        
         }
         var signInResult= await signInManager.CheckPasswordSignInAsync(user,request.Password,lockoutOnFailure:true);
 

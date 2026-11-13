@@ -819,6 +819,11 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                         .HasColumnType("geography (point,4326)")
                         .HasColumnName("location");
 
+                    b.Property<string>("LocationReference")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("location_reference");
+
                     b.Property<decimal>("Longitude")
                         .HasPrecision(9, 6)
                         .HasColumnType("numeric(9,6)")

@@ -26,6 +26,7 @@ public class ServiceRequest
     public string CountryCode { get; set; } = "MX";
     public decimal Latitude { get; set; }
     public decimal Longitude { get; set; }
+    public string? LocationReference { get; set; }
     public Point? Location { get; set; }
 
     public DateTimeOffset CreatedAt { get; set; }
@@ -40,6 +41,7 @@ public class ServiceRequest
     public Guid? CancelledByUserId { get; set; }
     public string? CancellationReason { get; set; }
     public DateTimeOffset? ExpiresAt { get; set; }
+    
 
     // The SQL schema stores the generated PostGIS geography value in `location`.
     // Its Npgsql/NetTopologySuite mapping will be added in the DbContext step.
