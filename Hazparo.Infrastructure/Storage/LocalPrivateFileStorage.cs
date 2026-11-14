@@ -99,4 +99,37 @@ public sealed class LocalPrivateFileStorage(
 
         return relativeKey;
     }
+    public Task<Stream?> OpenReadAsync(
+    string storageKey,
+    CancellationToken cancellationToken)
+    {
+        var root = Path.GetFullPath(rootPath) +
+            Path.DirectorySeparatorChar;
+
+        var fullPath = Path.GetFullPath(
+            Path.Combine(rootPath, storageKey));
+
+        if (!fullPath.StartsWith(
+                root,
+                StringComparison.Ordinal))
+        {
+            throw new InvalidOperationException(
+                "Invalid private file path.");
+        }
+
+        if (!File.Exists(fullPath))
+        {
+            return Task.FromResult<Stream?>(null);
+        }
+
+        Stream stream = new FileStream(
+            fullPath,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.Read,
+            bufferSize: 81920,
+            useAsync: true);
+
+        return Task.FromResult<Stream?>(stream);
+    }
 }

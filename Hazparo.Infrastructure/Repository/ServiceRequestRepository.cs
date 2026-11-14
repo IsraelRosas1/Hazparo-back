@@ -50,4 +50,33 @@ public sealed class ServiceRequestRepository(
             .OrderByDescending(request => request.CreatedAt)
             .ToListAsync(cancellationToken);
     }
+    public Task<ServiceRequest?> GetByIdForClientAsync(Guid requestId,Guid clientId,CancellationToken cancellationToken)
+    {
+        return dbContext.ServiceRequests
+            .Include(request => request.Category)
+            .Include(request => request.Photos)
+            .FirstOrDefaultAsync(
+                request =>
+                    request.Id == requestId &&
+                    request.ClientId == clientId,
+                cancellationToken);
+    }
+
+    public Task<ServiceRequestPhoto?> GetPhotoByIdForClientAsync(Guid requestId,Guid photoId,Guid clientId, CancellationToken cancellationToken)
+    {
+        return dbContext.ServiceRequestPhotos
+            .Include(photo => photo.Request)
+            .FirstOrDefaultAsync(
+                photo =>
+                    photo.Id == photoId &&
+                    photo.RequestId == requestId &&
+                    photo.Request.ClientId == clientId,
+                cancellationToken);
+    }
+
+    public Task SaveChangesAsync(
+        CancellationToken cancellationToken)
+    {
+        return dbContext.SaveChangesAsync(cancellationToken);
+    }
 }

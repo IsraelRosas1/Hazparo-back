@@ -9,6 +9,7 @@
       "Hazparo.API/1.0.0": {
         "dependencies": {
           "EFCore.NamingConventions": "10.0.1",
+          "Hazparo.Application": "1.0.0",
           "Hazparo.Infrastructure": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.5",
           "Microsoft.AspNetCore.OpenApi": "10.0.14",

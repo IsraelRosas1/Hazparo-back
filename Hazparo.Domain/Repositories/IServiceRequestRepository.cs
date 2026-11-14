@@ -11,4 +11,9 @@ public interface IServiceRequestRepository
     Task CreateAsync(ServiceRequest request, IReadOnlyCollection<ServiceRequestPhoto> photos, CancellationToken cancellationToken);
 
     Task<IReadOnlyList<ServiceRequest>> GetByClientIdAsync(Guid clientId, CancellationToken cancellationToken);
+    Task<ServiceRequest?> GetByIdForClientAsync(Guid requestId, Guid clientId, CancellationToken cancellationToken);
+
+    Task<ServiceRequestPhoto?> GetPhotoByIdForClientAsync(Guid requestId,Guid photoId,Guid clientId, CancellationToken cancellationToken);
+
+    Task SaveChangesAsync(CancellationToken cancellationToken);
 }

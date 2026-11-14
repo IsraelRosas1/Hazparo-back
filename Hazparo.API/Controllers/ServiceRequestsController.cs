@@ -1,8 +1,7 @@
-using Hazparo.Application.ServiceRequests.Commands
-    .CreateServiceRequest;
+using Hazparo.Application.ServiceRequests.Commands.CreateServiceRequest;
 using Hazparo.Application.ServiceRequests.Dtos;
-using Hazparo.Application.ServiceRequests.Queries
-    .GetMyServiceRequests;
+using Hazparo.Application.ServiceRequests.Queries.GetMyServiceRequests;
+using Hazparo.Application.ServiceRequests.Queries.GetServiceRequestPhoto;
 using Hazparo.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -100,5 +99,25 @@ public sealed class ServiceRequestsController(IMediator mediator): ControllerBas
             new GetMyServiceRequestsQuery());
 
         return Ok(result);
+    }
+
+    [HttpGet("{requestId:guid}/photos/{photoId:guid}")]
+    public async Task<IActionResult> GetPhoto([FromRoute] Guid requestId, [FromRoute] Guid photoId)
+    {
+        var result = await mediator.Send(
+            new GetServiceRequestPhotoQuery
+            {
+                RequestId = requestId,
+                PhotoId = photoId
+            });
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return File(
+            result.Content,
+            result.ContentType);
     }
 }
