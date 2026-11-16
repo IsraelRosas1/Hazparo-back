@@ -50,6 +50,8 @@ public sealed class ServiceRequestProfile : Profile
             .ForMember(
                 destination => destination.StatusHistory,
                 options => options.Ignore());
+        CreateMap<CreateServiceRequestDto, CreateServiceRequestCommand>()
+            .ForMember(destination => destination.Photos, options => options.Ignore());
 
         CreateMap<UpdateServiceRequestCommand, ServiceRequest>()
             .ForMember(
@@ -97,13 +99,14 @@ public sealed class ServiceRequestProfile : Profile
             .ForMember(
                 destination => destination.StatusHistory,
                 options => options.Ignore());
+        CreateMap<UpdateServiceRequestDto, UpdateServiceRequestCommand>()
+        .ForMember(destination => destination.RequestId,options => options.Ignore());
 
         CreateMap<ServiceRequestPhoto, ServiceRequestPhotoDto>();
 
         CreateMap<ServiceRequest, ServiceRequestDetailsDto>()
             .ForMember(
                 destination => destination.CategoryName,
-                options => options.MapFrom(
-                    source => source.Category.Name));
+                options => options.MapFrom(source => source.Category.Name));
     }
 }

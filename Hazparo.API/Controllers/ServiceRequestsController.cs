@@ -1,6 +1,10 @@
+using AutoMapper;
+using Hazparo.Application.ServiceRequests.Commands.CancelServiceRequest;
 using Hazparo.Application.ServiceRequests.Commands.CreateServiceRequest;
+using Hazparo.Application.ServiceRequests.Commands.UpdateServiceRequest;
 using Hazparo.Application.ServiceRequests.Dtos;
 using Hazparo.Application.ServiceRequests.Queries.GetMyServiceRequests;
+using Hazparo.Application.ServiceRequests.Queries.GetServiceRequestById;
 using Hazparo.Application.ServiceRequests.Queries.GetServiceRequestPhoto;
 using Hazparo.Domain.Constants;
 using MediatR;
@@ -12,7 +16,7 @@ namespace Hazparo.API.Controllers;
 [ApiController]
 [Route("api/service-requests")]
 [Authorize(Roles = UserRoles.Client)]
-public sealed class ServiceRequestsController(IMediator mediator): ControllerBase
+public sealed class ServiceRequestsController(IMediator mediator, IMapper mapper): ControllerBase
 {
     [HttpPost]
     [Consumes("multipart/form-data")]
@@ -49,27 +53,10 @@ public sealed class ServiceRequestsController(IMediator mediator): ControllerBas
                         Length = photo.Length
                     });
             }
+            var command = mapper.Map<CreateServiceRequestCommand>(dto);
+            command.Photos = uploadedPhotos;
+            var requestId = await mediator.Send(command);
 
-            var requestId = await mediator.Send(
-                new CreateServiceRequestCommand
-                {
-                    CategoryId = dto.CategoryId,
-                    Title = dto.Title,
-                    Description = dto.Description,
-                    IsUrgent = dto.IsUrgent,
-                    ScheduledFor = dto.ScheduledFor,
-                    AddressLine1 = dto.AddressLine1,
-                    AddressLine2 = dto.AddressLine2,
-                    Neighborhood = dto.Neighborhood,
-                    City = dto.City,
-                    State = dto.State,
-                    PostalCode = dto.PostalCode,
-                    CountryCode = dto.CountryCode,
-                    LocationReference = dto.LocationReference,
-                    Latitude = dto.Latitude,
-                    Longitude = dto.Longitude,
-                    Photos = uploadedPhotos
-                });
 
             if (requestId is null)
             {
@@ -119,5 +106,57 @@ public sealed class ServiceRequestsController(IMediator mediator): ControllerBas
         return File(
             result.Content,
             result.ContentType);
+    }
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ServiceRequestDetailsDto>> GetById([FromRoute] Guid id)
+    {
+        var result = await mediator.Send(
+            new GetServiceRequestByIdQuery
+            {
+                RequestId = id
+            });
+
+        if (result is null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id,[FromBody] UpdateServiceRequestDto dto)
+    {
+        var command = mapper.Map<UpdateServiceRequestCommand>(dto);
+        command.RequestId = id;
+        var updated = await mediator.Send(command);
+
+
+        if (!updated)
+        {
+            return BadRequest(
+                "The job was not found, is not open, or the category is invalid.");
+        }
+
+        return NoContent();
+    }
+
+    [HttpPost("{id:guid}/cancel")]
+    public async Task<IActionResult> Cancel([FromRoute] Guid id, [FromBody] CancelServiceRequestDto dto)
+    {
+        var cancelled = await mediator.Send(
+            new CancelServiceRequestCommand
+            {
+                RequestId = id,
+                Reason = dto.Reason
+            });
+
+        if (!cancelled)
+        {
+            return BadRequest(
+                "The job was not found or can no longer be cancelled.");
+        }
+
+        return NoContent();
     }
 }

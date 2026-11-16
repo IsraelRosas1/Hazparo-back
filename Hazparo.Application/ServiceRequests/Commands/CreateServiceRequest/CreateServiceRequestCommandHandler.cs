@@ -1,3 +1,4 @@
+using AutoMapper;
 using Hazparo.Application.User;
 using Hazparo.Domain.Entities;
 using Hazparo.Domain.Interfaces;
@@ -11,7 +12,7 @@ namespace Hazparo.Application.ServiceRequests.Commands
 public sealed class CreateServiceRequestCommandHandler(
     IUserContext userContext,
     IServiceRequestRepository serviceRequestRepository,
-    IPrivateFileStorage privateFileStorage)
+    IPrivateFileStorage privateFileStorage, IMapper mapper)
     : IRequestHandler<CreateServiceRequestCommand, Guid?>
 {
     private const long MaxPhotoSize = 5 * 1024 * 1024;
@@ -83,6 +84,7 @@ public sealed class CreateServiceRequestCommandHandler(
         {
             SRID = 4326
         };
+
 
         var serviceRequest = new ServiceRequest
         {

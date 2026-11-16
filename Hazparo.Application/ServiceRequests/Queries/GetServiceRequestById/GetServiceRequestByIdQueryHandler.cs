@@ -1,3 +1,4 @@
+using AutoMapper;
 using Hazparo.Application.ServiceRequests.Dtos;
 using Hazparo.Application.User;
 using Hazparo.Domain.Repositories;
@@ -6,7 +7,8 @@ using MediatR;
 namespace Hazparo.Application.ServiceRequests.Queries.GetServiceRequestById;
 
 public sealed class GetServiceRequestByIdQueryHandler(
-    IUserContext userContext,IServiceRequestRepository serviceRequestRepository)
+    IUserContext userContext,IServiceRequestRepository serviceRequestRepository,
+    IMapper mapper)
     : IRequestHandler<GetServiceRequestByIdQuery,ServiceRequestDetailsDto?>
 {
     public async Task<ServiceRequestDetailsDto?> Handle(GetServiceRequestByIdQuery request, CancellationToken cancellationToken)
@@ -30,41 +32,8 @@ public sealed class GetServiceRequestByIdQueryHandler(
             return null;
         }
 
-        return new ServiceRequestDetailsDto
-        {
-            Id = serviceRequest.Id,
-            CategoryId = serviceRequest.CategoryId,
-            CategoryName = serviceRequest.Category.Name,
-            Title = serviceRequest.Title,
-            Description = serviceRequest.Description,
-            IsUrgent = serviceRequest.IsUrgent,
-            ScheduledFor = serviceRequest.ScheduledFor,
-            Status = serviceRequest.Status,
+        return mapper.Map<ServiceRequestDetailsDto>(
+            serviceRequest);
 
-            AddressLine1 = serviceRequest.AddressLine1,
-            AddressLine2 = serviceRequest.AddressLine2,
-            Neighborhood = serviceRequest.Neighborhood,
-            City = serviceRequest.City,
-            State = serviceRequest.State,
-            PostalCode = serviceRequest.PostalCode,
-            CountryCode = serviceRequest.CountryCode,
-            LocationReference = serviceRequest.LocationReference,
-
-            Latitude = serviceRequest.Latitude,
-            Longitude = serviceRequest.Longitude,
-
-            CreatedAt = serviceRequest.CreatedAt,
-            UpdatedAt = serviceRequest.UpdatedAt,
-
-            Photos = serviceRequest.Photos
-                .OrderBy(photo => photo.SortOrder)
-                .Select(photo => new ServiceRequestPhotoDto
-                {
-                    Id = photo.Id,
-                    ContentType = photo.ContentType,
-                    SortOrder = photo.SortOrder
-                })
-                .ToList()
-        };
     }
 }
