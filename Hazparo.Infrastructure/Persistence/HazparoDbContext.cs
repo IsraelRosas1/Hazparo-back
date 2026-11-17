@@ -134,6 +134,8 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
             .WithMany()
             .HasForeignKey(token => token.ReplacedByTokenId)
             .OnDelete(DeleteBehavior.SetNull);
+        entity.HasIndex(token => token.ExpiresAt)
+            .HasDatabaseName("auth_refresh_tokens_expires_at_idx");
     }
 
     private static void ConfigureClientAddress(ModelBuilder modelBuilder)

@@ -34,10 +34,10 @@ public static class ServiceCollectionExtensions
             npgsql.MapEnum<QuoteStatus>("quote_status");
         })
         .UseSnakeCaseNamingConvention());
-
         services.AddScoped<IHazparoSeeder, HazparoSeeder>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+        services.AddHostedService<RefreshTokenCleanupService>();
         services.AddScoped<IAccessTokenService, JwtTokenService>();
         services.AddScoped<IAccountEmailSender, AccountEmailSender>();
         services.AddScoped<IClientProfileRepository, ClientProfileRepository>();

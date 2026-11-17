@@ -40,4 +40,10 @@ public sealed class RefreshTokenRepository(
     {
         await dbContext.SaveChangesAsync(cancellationToken);
     }
+    public Task<int> DeleteExpiredAsync(DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        return dbContext.AuthRefreshTokens
+            .Where(token => token.ExpiresAt <= now)
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

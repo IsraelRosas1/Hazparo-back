@@ -11,4 +11,5 @@ public interface IRefreshTokenRepository
     Task RevokeAllActiveAsync(Guid userId,DateTimeOffset revokedAt, CancellationToken cancellationToken);
 
     Task SaveChangesAsync( CancellationToken cancellationToken);
+    Task<int> DeleteExpiredAsync(DateTimeOffset now, CancellationToken cancellationToken);
 }

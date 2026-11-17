@@ -181,6 +181,9 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_auth_refresh_tokens");
 
+                    b.HasIndex("ExpiresAt")
+                        .HasDatabaseName("auth_refresh_tokens_expires_at_idx");
+
                     b.HasIndex("ReplacedByTokenId")
                         .HasDatabaseName("ix_auth_refresh_tokens_replaced_by_token_id");
 
