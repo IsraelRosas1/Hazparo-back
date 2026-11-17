@@ -46,6 +46,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IProfessionalDocumentRepository,ProfessionalDocumentRepository>();
         services.AddScoped<IProfessionalOnboardingRepository,ProfessionalOnboardingRepository>();
         services.AddScoped<IServiceRequestRepository, ServiceRequestRepository>();
-    
+        services.AddScoped<IProfessionalProfileRepository,ProfessionalProfileRepository>();
     }
 }

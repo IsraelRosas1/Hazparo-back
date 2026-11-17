@@ -40,6 +40,15 @@ public sealed class BecomeProfessionalCommandHandler(
                 "UserNotFound",
                 "The user was not found.");
         }
+        user.DisplayName = request.DisplayName.Trim();
+        user.PhoneNumber = request.PhoneNumber.Trim();
+
+        var userUpdateResult =await userManager.UpdateAsync(user);
+        
+        if (!userUpdateResult.Succeeded)
+        {
+            return userUpdateResult;
+        }
 
         var categoryIds = request.CategoryIds
             .Distinct()
@@ -96,10 +105,16 @@ public sealed class BecomeProfessionalCommandHandler(
         var professionalLocation = new ProfessionalLocation
         {
             ProfessionalId = userId,
+            AddressLine1 = request.AddressLine1.Trim(),
+            AddressLine2 = request.AddressLine2?.Trim(),
+            Neighborhood = request.Neighborhood?.Trim(),
+            City = request.City.Trim(),
+            State = request.State?.Trim(),
+            PostalCode = request.PostalCode?.Trim(),
+            CountryCode = request.CountryCode.Trim().ToUpperInvariant(),
             Latitude = request.Latitude,
             Longitude = request.Longitude,
             Location = point,
-            City = request.City?.Trim(),
             UpdatedAt = now
         };
 

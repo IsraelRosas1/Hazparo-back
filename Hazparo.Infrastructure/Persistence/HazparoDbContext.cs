@@ -258,15 +258,29 @@ public class HazparoDbContext(DbContextOptions<HazparoDbContext> options)
         entity.Property(location => location.ProfessionalId)
             .HasColumnName("professional_id")
             .HasColumnType("uuid");
+        entity.Property(location => location.AddressLine1)
+        .HasColumnName("address_line1")
+        .HasMaxLength(200)
+        .IsRequired();
+        entity.Property(location => location.AddressLine2)
+            .HasColumnName("address_line2")
+            .HasMaxLength(200);
+        entity.Property(location => location.Neighborhood).HasMaxLength(120);
+        entity.Property(location => location.City).HasMaxLength(120).IsRequired();
+        entity.Property(location => location.State).HasMaxLength(120);
+        entity.Property(location => location.PostalCode).HasColumnName("postal_code").HasMaxLength(20);
+        entity.Property(location => location.CountryCode)
+            .HasColumnName("country_code")
+            .HasColumnType("char(2)")
+            .HasDefaultValue("MX")
+            .IsRequired();
         entity.Property(address => address.Latitude).HasPrecision(9,6).IsRequired();
         entity.Property(address=>address.Longitude).HasPrecision(9,6).IsRequired();
         entity.Property(location => location.Location)
             .HasColumnName("location")
             .HasColumnType("geography (point,4326)")
             .IsRequired();
-        entity.Property(location => location.City).HasMaxLength(120);
-        entity.Property(location => location.UpdatedAt)
-            .HasColumnName("updated_at")
+        entity.Property(location => location.UpdatedAt).HasColumnName("updated_at")
             .HasDefaultValueSql("now()")
             .IsRequired();
 

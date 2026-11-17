@@ -48,10 +48,18 @@ public sealed class ProfessionalOnboardingRepository(
         }
         else
         {
+            existingLocation.AddressLine1 =
+            location.AddressLine1;
+
+            existingLocation.AddressLine2 =location.AddressLine2;
+            existingLocation.Neighborhood =location.Neighborhood;
+            existingLocation.City =location.City;
+            existingLocation.State =location.State;
+            existingLocation.PostalCode =location.PostalCode;
+            existingLocation.CountryCode =location.CountryCode;
             existingLocation.Latitude = location.Latitude;
             existingLocation.Longitude = location.Longitude;
             existingLocation.Location = location.Location;
-            existingLocation.City = location.City;
             existingLocation.UpdatedAt = location.UpdatedAt;
         }
 

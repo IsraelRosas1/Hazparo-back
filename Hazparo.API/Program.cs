@@ -27,6 +27,7 @@ builder.Services.AddCors(options =>
                 "http://localhost:5173",
                 "http://10.0.0.60:5173",
                 "http://35.16.112.140:5173",
+                "http://35.16.24.35:5173",
                 "http://192.168.1.252:5173",
                 "http://localhost:5174",
                 "http://10.0.0.60:5174",

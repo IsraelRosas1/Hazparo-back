@@ -1,6 +1,10 @@
+using AutoMapper;
 using Hazparo.Application.Professional.Commands.BecomeProfessional;
+using Hazparo.Application.Professional.Commands.UpdateProfessionalProfile;
 using Hazparo.Application.Professional.Commands.UploadVerificationDocuments;
 using Hazparo.Application.Professional.Dtos;
+using Hazparo.Application.Professional.Queries.GetMyProfessionalProfile;
+using Hazparo.Application.Professional.Queries.GetMyVerificationStatus;
 using Hazparo.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +14,7 @@ namespace Hazparo.API.Controllers;
 
 [ApiController]
 [Route("api/professionals")]
-public class ProfessionalsController(IMediator mediator) : ControllerBase
+public class ProfessionalsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpPost("verification-documents")]
     [Authorize(Roles = UserRoles.Professional)]
@@ -80,6 +84,8 @@ public class ProfessionalsController(IMediator mediator) : ControllerBase
         var result = await mediator.Send(
             new BecomeProfessionalCommand
             {
+                DisplayName = dto.DisplayName,
+                PhoneNumber = dto.PhoneNumber,
                 BusinessName = dto.BusinessName,
                 Bio = dto.Bio,
                 YearsExperience = dto.YearsExperience,
@@ -89,7 +95,13 @@ public class ProfessionalsController(IMediator mediator) : ControllerBase
                 CategoryIds = dto.CategoryIds,
                 Latitude = dto.Latitude,
                 Longitude = dto.Longitude,
-                City = dto.City
+                AddressLine1 = dto.AddressLine1,
+                AddressLine2 = dto.AddressLine2,
+                Neighborhood = dto.Neighborhood,
+                City = dto.City,
+                State = dto.State,
+                PostalCode = dto.PostalCode,
+                CountryCode = dto.CountryCode
             });
 
         if (!result.Succeeded)
@@ -99,4 +111,88 @@ public class ProfessionalsController(IMediator mediator) : ControllerBase
 
         return NoContent();
     }
+    [HttpPut("me")]
+    [Authorize(Roles = UserRoles.Professional)]
+    public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateProfessionalProfileDto dto)
+    {
+        var result = await mediator.Send(
+            new UpdateProfessionalProfileCommand
+            {
+                DisplayName = dto.DisplayName,
+                BusinessName = dto.BusinessName,
+                Bio = dto.Bio,
+                HourlyRateMxn = dto.HourlyRateMxn,
+                ServiceRadiusKm = dto.ServiceRadiusKm,
+                IsAvailable = dto.IsAvailable
+            });
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return NoContent();
+    }
+
+    [HttpGet("me")]
+    [Authorize(Roles = UserRoles.Professional)]
+    public async Task<ActionResult<ProfessionalProfileDetailsDto>>GetMyProfile()
+    {
+        var result = await mediator.Send(new GetMyProfessionalProfileQuery());
+
+        if (result is null)
+        {
+            return NotFound(
+                "The professional profile was not found.");
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet("me/location")]
+    [Authorize(Roles = UserRoles.Professional)]
+    public async Task<ActionResult<ProfessionalLocationDto>>GetMyLocation()
+    {
+        var result = await mediator.Send(new GetMyProfessionalLocationQuery());
+
+        if (result is null)
+        {
+            return NotFound(
+                "The professional location was not found.");
+        }
+
+        return Ok(result);
+    }
+
+    [HttpPut("me/location")]
+    [Authorize(Roles = UserRoles.Professional)]
+    public async Task<IActionResult> UpdateMyLocation([FromBody] ProfessionalLocationDto dto)
+    {
+        var command =mapper.Map<UpdateProfessionalLocationCommand>(dto);
+
+        var result = await mediator.Send(command);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return NoContent();
+    }
+
+    [HttpGet("me/verification-status")]
+    [Authorize(Roles = UserRoles.Professional)]
+    public async Task<
+        ActionResult<ProfessionalVerificationStatusDto>>GetMyVerificationStatus()
+    {
+        var result = await mediator.Send(new GetMyVerificationStatusQuery());
+
+        if (result is null)
+        {
+            return NotFound("The professional profile was not found.");
+        }
+
+        return Ok(result);
+    }
+
 }

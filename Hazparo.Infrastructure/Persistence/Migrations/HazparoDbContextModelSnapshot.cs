@@ -344,10 +344,29 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("professional_id");
 
+                    b.Property<string>("AddressLine1")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("address_line1");
+
+                    b.Property<string>("AddressLine2")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("address_line2");
+
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("character varying(120)")
                         .HasColumnName("city");
+
+                    b.Property<string>("CountryCode")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(2)")
+                        .HasDefaultValue("MX")
+                        .HasColumnName("country_code");
 
                     b.Property<decimal>("Latitude")
                         .HasPrecision(9, 6)
@@ -363,6 +382,21 @@ namespace Hazparo.Infrastructure.Persistence.Migrations
                         .HasPrecision(9, 6)
                         .HasColumnType("numeric(9,6)")
                         .HasColumnName("longitude");
+
+                    b.Property<string>("Neighborhood")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("neighborhood");
+
+                    b.Property<string>("PostalCode")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("postal_code");
+
+                    b.Property<string>("State")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("state");
 
                     b.Property<DateTimeOffset>("UpdatedAt")
                         .ValueGeneratedOnAdd()
