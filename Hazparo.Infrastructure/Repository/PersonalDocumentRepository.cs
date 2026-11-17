@@ -9,9 +9,7 @@ public sealed class ProfessionalDocumentRepository(
     HazparoDbContext dbContext)
     : IProfessionalDocumentRepository
 {
-    public Task<bool> ProfessionalExistsAsync(
-        Guid professionalId,
-        CancellationToken cancellationToken)
+    public Task<bool> ProfessionalExistsAsync(Guid professionalId,CancellationToken cancellationToken)
     {
         return dbContext.ProfessionalProfiles
             .AnyAsync(
@@ -19,42 +17,57 @@ public sealed class ProfessionalDocumentRepository(
                 cancellationToken);
     }
 
-    public Task<bool> DocumentsAlreadyExistAsync(
-        Guid professionalId,
-        CancellationToken cancellationToken)
+    public Task<VerificationStatus?> GetVerificationStatusAsync(Guid professionalId, CancellationToken cancellationToken)
     {
-        return dbContext.ProfessionalVerificationDocuments
-            .AnyAsync(
-                document =>
-                    document.ProfessionalId == professionalId,
-                cancellationToken);
+        return dbContext.ProfessionalProfiles
+            .Where(profile => profile.UserId == professionalId)
+            .Select(profile => (VerificationStatus?)profile.Verification)
+            .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task SaveAsync(
+    public async Task<IReadOnlyList<ProfessionalVerificationDocument>>GetByProfessionalIdAsync(
+            Guid professionalId,
+            CancellationToken cancellationToken)
+    {
+        return await dbContext
+            .ProfessionalVerificationDocuments
+            .AsNoTracking()
+            .Where(document =>
+                document.ProfessionalId == professionalId)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task ReplaceAsync(Guid professionalId,
         IReadOnlyCollection<ProfessionalVerificationDocument> documents,
         CancellationToken cancellationToken)
     {
-        await dbContext.ProfessionalVerificationDocuments.AddRangeAsync(
-            documents,
-            cancellationToken);
+        var existingDocuments =
+            await dbContext
+                .ProfessionalVerificationDocuments
+                .Where(document =>
+                    document.ProfessionalId == professionalId)
+                .ToListAsync(cancellationToken);
 
-        var professionalId = documents
-            .Select(document => document.ProfessionalId)
-            .First();
+        dbContext.ProfessionalVerificationDocuments.RemoveRange(
+            existingDocuments);
+
+        await dbContext
+            .ProfessionalVerificationDocuments
+            .AddRangeAsync(
+                documents,
+                cancellationToken);
 
         var profile =
             await dbContext.ProfessionalProfiles
                 .SingleAsync(
-                    item => item.UserId == professionalId,
+                    professional =>
+                        professional.UserId == professionalId,
                     cancellationToken);
 
-        profile.Verification =
-            VerificationStatus.Pending;
+        profile.Verification =VerificationStatus.Pending;
 
-        profile.UpdatedAt =
-            DateTimeOffset.UtcNow;
+        profile.UpdatedAt =DateTimeOffset.UtcNow;
 
-        await dbContext.SaveChangesAsync(
-            cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

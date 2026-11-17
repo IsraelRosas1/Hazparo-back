@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hazparo.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+01826cd8a76799089474e5b6b8c617abb42388a3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c81080b88073de2819e4578a8d3a09e27ef056ce")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hazparo.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hazparo.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

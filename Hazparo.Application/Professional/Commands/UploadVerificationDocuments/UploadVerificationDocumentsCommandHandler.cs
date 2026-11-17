@@ -4,6 +4,7 @@ using Hazparo.Domain.Interfaces;
 using Hazparo.Domain.Repositories;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Hazparo.Application.Professional.Commands
     .UploadVerificationDocuments;
@@ -11,7 +12,8 @@ namespace Hazparo.Application.Professional.Commands
 public sealed class UploadVerificationDocumentsCommandHandler(
     IUserContext userContext,
     IPrivateFileStorage privateFileStorage,
-    IProfessionalDocumentRepository documentRepository)
+    IProfessionalDocumentRepository documentRepository,
+    ILogger<UploadVerificationDocumentsCommandHandler> logger)
     : IRequestHandler<
         UploadVerificationDocumentsCommand,
         IdentityResult>
@@ -22,13 +24,13 @@ public sealed class UploadVerificationDocumentsCommandHandler(
         AllowedContentTypes =
         new(StringComparer.OrdinalIgnoreCase)
         {
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/heic",
-        "image/heif",
-        "image/webp",
-        "image/avif"        
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/heic",
+            "image/heif",
+            "image/webp",
+            "image/avif"
         };
 
     public async Task<IdentityResult> Handle(
@@ -38,35 +40,41 @@ public sealed class UploadVerificationDocumentsCommandHandler(
         var currentUser = userContext.GetCurrentUser();
 
         if (currentUser is null ||
-            !Guid.TryParse(currentUser.Id, out var professionalId))
+            !Guid.TryParse(
+                currentUser.Id,
+                out var professionalId))
         {
             return Failed(
                 "Unauthorized",
                 "The authenticated user could not be identified.");
         }
 
-        var isProfessional =
-            await documentRepository.ProfessionalExistsAsync(
+        var verificationStatus =
+            await documentRepository.GetVerificationStatusAsync(
                 professionalId,
                 cancellationToken);
 
-        if (!isProfessional)
+        if (verificationStatus is null)
         {
             return Failed(
                 "ProfessionalProfileNotFound",
                 "Complete professional onboarding first.");
         }
 
-        var documentsAlreadyExist =
-            await documentRepository.DocumentsAlreadyExistAsync(
-                professionalId,
-                cancellationToken);
-
-        if (documentsAlreadyExist)
+        if (verificationStatus ==
+            VerificationStatus.Pending)
         {
             return Failed(
-                "DocumentsAlreadyUploaded",
-                "Verification documents have already been uploaded.");
+                "VerificationPending",
+                "Your verification documents are already being reviewed.");
+        }
+
+        if (verificationStatus ==
+            VerificationStatus.Verified)
+        {
+            return Failed(
+                "AlreadyVerified",
+                "Your account has already been verified.");
         }
 
         var files = new[]
@@ -103,13 +111,20 @@ public sealed class UploadVerificationDocumentsCommandHandler(
             {
                 return Failed(
                     "InvalidFileType",
-                    "Only JPEG and PNG images are accepted.");
+                    "The uploaded file type is not supported.");
             }
         }
 
+        var oldDocuments =
+            await documentRepository.GetByProfessionalIdAsync(
+                professionalId,
+                cancellationToken);
+
         var savedKeys = new List<string>();
-        var documents = new List<
-            ProfessionalVerificationDocument>();
+        var newDocuments =
+            new List<ProfessionalVerificationDocument>();
+
+        var now = DateTimeOffset.UtcNow;
 
         try
         {
@@ -124,26 +139,26 @@ public sealed class UploadVerificationDocumentsCommandHandler(
 
                 savedKeys.Add(storageKey);
 
-                documents.Add(
+                newDocuments.Add(
                     new ProfessionalVerificationDocument
                     {
                         Id = Guid.NewGuid(),
                         ProfessionalId = professionalId,
                         DocumentType = item.Type,
                         StorageKey = storageKey,
-                        OriginalFileName = Path.GetFileName(
-                            item.File.OriginalFileName),
+                        OriginalFileName =
+                            Path.GetFileName(
+                                item.File.OriginalFileName),
                         ContentType = item.File.ContentType,
                         SizeBytes = item.File.Length,
-                        CreatedAt = DateTimeOffset.UtcNow
+                        CreatedAt = now
                     });
             }
 
-            await documentRepository.SaveAsync(
-                documents,
+            await documentRepository.ReplaceAsync(
+                professionalId,
+                newDocuments,
                 cancellationToken);
-
-            return IdentityResult.Success;
         }
         catch
         {
@@ -151,11 +166,30 @@ public sealed class UploadVerificationDocumentsCommandHandler(
             {
                 await privateFileStorage.DeleteAsync(
                     storageKey,
-                    cancellationToken);
+                    CancellationToken.None);
             }
 
             throw;
         }
+
+        foreach (var oldDocument in oldDocuments)
+        {
+            try
+            {
+                await privateFileStorage.DeleteAsync(
+                    oldDocument.StorageKey,
+                    CancellationToken.None);
+            }
+            catch (Exception exception)
+            {
+                logger.LogWarning(
+                    exception,
+                    "Could not delete old verification file {StorageKey}.",
+                    oldDocument.StorageKey);
+            }
+        }
+
+        return IdentityResult.Success;
     }
 
     private static IdentityResult Failed(
