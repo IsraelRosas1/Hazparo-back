@@ -1,4 +1,5 @@
 using AutoMapper;
+using Hazparo.Application.Professional.Dtos;
 using Hazparo.Application.ServiceRequests.Commands.CreateServiceRequest;
 using Hazparo.Application.ServiceRequests.Commands.UpdateServiceRequest;
 using Hazparo.Application.ServiceRequests.Dtos;
@@ -100,7 +101,7 @@ public sealed class ServiceRequestProfile : Profile
                 destination => destination.StatusHistory,
                 options => options.Ignore());
         CreateMap<UpdateServiceRequestDto, UpdateServiceRequestCommand>()
-        .ForMember(destination => destination.RequestId,options => options.Ignore());
+            .ForMember(destination => destination.RequestId,options => options.Ignore());
 
         CreateMap<ServiceRequestPhoto, ServiceRequestPhotoDto>();
 
@@ -108,5 +109,11 @@ public sealed class ServiceRequestProfile : Profile
             .ForMember(
                 destination => destination.CategoryName,
                 options => options.MapFrom(source => source.Category.Name));
+        
+        CreateMap<ServiceRequest,AvailableProfessionalServiceRequestDto>()
+            .ForMember(
+                destination => destination.CategoryName,
+                options => options.MapFrom(
+                    source => source.Category.Name));
     }
 }

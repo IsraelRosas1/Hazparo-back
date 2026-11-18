@@ -16,4 +16,5 @@ public interface IServiceRequestRepository
     Task<ServiceRequestPhoto?> GetPhotoByIdForClientAsync(Guid requestId,Guid photoId,Guid clientId, CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task<IReadOnlyList<ServiceRequest>>GetAvailableForProfessionalAsync(Guid professionalId,CancellationToken cancellationToken);
 }

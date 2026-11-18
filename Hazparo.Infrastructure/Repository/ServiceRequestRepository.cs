@@ -79,4 +79,51 @@ public sealed class ServiceRequestRepository(
     {
         return dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<IReadOnlyList<ServiceRequest>>GetAvailableForProfessionalAsync(Guid professionalId, CancellationToken cancellationToken)
+    {
+        var professional =
+            await dbContext.ProfessionalProfiles
+                .AsNoTracking()
+                .Include(profile => profile.Location)
+                .Include(profile => profile.Services)
+                .SingleOrDefaultAsync(
+                    profile => profile.UserId == professionalId,
+                    cancellationToken);
+
+        if (professional is null ||
+            !professional.IsAvailable ||
+            professional.Location?.Location is null)
+        {
+            return [];
+        }
+
+        var categoryIds = professional.Services
+            .Where(service => service.IsActive)
+            .Select(service => service.CategoryId)
+            .ToList();
+
+        if (categoryIds.Count == 0)
+        {
+            return [];
+        }
+
+        var professionalPoint =professional.Location.Location;
+
+        var radiusInMeters =professional.ServiceRadiusKm * 1000d;
+
+        return await dbContext.ServiceRequests
+            .AsNoTracking()
+            .Include(request => request.Category)
+            .Where(request =>
+                request.Status == ServiceRequestStatus.Open &&
+                categoryIds.Contains(request.CategoryId) &&
+                request.Location != null &&
+                request.Location.Distance(
+                    professionalPoint) <= radiusInMeters)
+            .OrderByDescending(request => request.IsUrgent)
+            .ThenBy(request => request.ScheduledFor)
+            .ThenByDescending(request => request.CreatedAt)
+            .ToListAsync(cancellationToken);
+    }
 }

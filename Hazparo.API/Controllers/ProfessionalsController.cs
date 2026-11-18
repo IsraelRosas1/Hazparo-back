@@ -3,6 +3,7 @@ using Hazparo.Application.Professional.Commands.BecomeProfessional;
 using Hazparo.Application.Professional.Commands.UpdateProfessionalProfile;
 using Hazparo.Application.Professional.Commands.UploadVerificationDocuments;
 using Hazparo.Application.Professional.Dtos;
+using Hazparo.Application.Professional.Queries.GetAvailableServiceRequests;
 using Hazparo.Application.Professional.Queries.GetMyProfessionalProfile;
 using Hazparo.Application.Professional.Queries.GetMyVerificationStatus;
 using Hazparo.Domain.Constants;
@@ -14,6 +15,7 @@ namespace Hazparo.API.Controllers;
 
 [ApiController]
 [Route("api/professionals")]
+[Authorize(Roles = UserRoles.Professional)]
 public class ProfessionalsController(IMediator mediator, IMapper mapper) : ControllerBase
 {
     [HttpPost("verification-documents")]
@@ -191,6 +193,16 @@ public class ProfessionalsController(IMediator mediator, IMapper mapper) : Contr
         {
             return NotFound("The professional profile was not found.");
         }
+
+        return Ok(result);
+    }
+    
+    [HttpGet("service-requests/available")]
+    [Authorize(Roles = UserRoles.Professional)]
+    public async Task<
+        ActionResult<List<AvailableProfessionalServiceRequestDto>>>GetAvailableServiceRequests()
+    {
+        var result = await mediator.Send(new GetAvailableServiceRequestsQuery());
 
         return Ok(result);
     }

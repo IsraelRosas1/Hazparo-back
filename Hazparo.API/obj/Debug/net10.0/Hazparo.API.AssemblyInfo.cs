@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hazparo.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+041f1e299db9617c7c78aeef5138a80bc76f1a7e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9fe16b42925c5864bab01dbaaee367da16c45d2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hazparo.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hazparo.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
